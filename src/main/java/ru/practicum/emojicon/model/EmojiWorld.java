@@ -1,12 +1,14 @@
 package ru.practicum.emojicon.model;
 
 import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.practicum.emojicon.engine.*;
 import ru.practicum.emojicon.model.landscape.EmojiWorldLandscape;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class EmojiWorld extends EmojiObject implements EntityResolver, EmojiObjectHolder, Controller {
@@ -17,7 +19,7 @@ public class EmojiWorld extends EmojiObject implements EntityResolver, EmojiObje
     private UUID selection = null;
     private EmojiWorldLandscape landscape;
 
-    public EmojiWorld(){
+    public EmojiWorld() {
         this.initEarth(2048, 2048);
         log.info("world created");
     }
@@ -51,7 +53,7 @@ public class EmojiWorld extends EmojiObject implements EntityResolver, EmojiObje
     }
 
     private void drawEarth(Frame frame) {
-        for(int x = Math.max(0, frame.getLeft()); x <= Math.min(getWidth(), frame.getRight()); x++){
+        for (int x = Math.max(0, frame.getLeft()); x <= Math.min(getWidth(), frame.getRight()); x++) {
             for (int y = Math.max(0, frame.getTop()); y <= Math.min(getHeight(), frame.getBottom()); y++) {
                 frame.setPosition(x, y);
                 int depth = landscape.getDepth(x, y);
@@ -78,36 +80,30 @@ public class EmojiWorld extends EmojiObject implements EntityResolver, EmojiObje
         objects.add(obj);
     }
 
+    private static final Function<KeyStroke, Boolean> ARROW_UP_FN = key -> key.getKeyType() == KeyType.ArrowUp || (key.getKeyType() == KeyType.Character && "wWцЦ".contains(String.valueOf(key.getCharacter())));
+
+    private static final Function<KeyStroke, Boolean> ARROW_DOWN_FN = key -> key.getKeyType() == KeyType.ArrowDown || (key.getKeyType() == KeyType.Character && "sSыЫ".contains(String.valueOf(key.getCharacter())));
+
+    private static final Function<KeyStroke, Boolean> ARROW_LEFT_FN = key -> key.getKeyType() == KeyType.ArrowLeft || (key.getKeyType() == KeyType.Character && "aAфФ".contains(String.valueOf(key.getCharacter())));
+
+    private static final Function<KeyStroke, Boolean> ARROW_RIGHT_FN = key -> key.getKeyType() == KeyType.ArrowRight || (key.getKeyType() == KeyType.Character && "dDвВ".contains(String.valueOf(key.getCharacter())));
+
     @Override
     public void handleKey(KeyStroke key) {
         objects.stream().filter(obj -> obj.getId().equals(selection)).filter(obj -> obj instanceof Controllable).map(obj -> (Controllable) obj).forEach(obj -> {
-            switch (key.getKeyType()){
-                case ArrowDown:
-                case ArrowLeft:
-                case ArrowUp:
-                case ArrowRight:
-                    Point pt = null;
-                    switch (key.getKeyType()){
-                        case ArrowDown:
-                            pt = new Point(0, 1);
-                            break;
-                        case ArrowLeft:
-                            pt = new Point(-1, 0);
-                            break;
-                        case ArrowRight:
-                            pt = new Point(1, 0);
-                            break;
-                        case ArrowUp:
-                            pt = new Point(0, -1);
-                            break;
-                        default:
-                            throw new IllegalArgumentException();
-                    }
-                    obj.move(pt);
-                    break;
-                default:
-
-                }
+            Point pt = null;
+            if (ARROW_DOWN_FN.apply(key)) {
+                pt = new Point(0, 1);
+            } else if (ARROW_LEFT_FN.apply(key)) {
+                pt = new Point(-1, 0);
+            } else if (ARROW_RIGHT_FN.apply(key)) {
+                pt = new Point(1, 0);
+            } else if (ARROW_UP_FN.apply(key)) {
+                pt = new Point(0, -1);
+            }
+            if (pt != null) {
+                obj.move(pt);
+            }
         });
     }
 
