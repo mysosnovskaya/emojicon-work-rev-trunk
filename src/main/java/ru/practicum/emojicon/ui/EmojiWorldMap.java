@@ -58,7 +58,7 @@ public class EmojiWorldMap implements Drawable, Controller {
         Area area = new Area(size.getColumns() / 2 - mapWidth / 2, size.getRows() / 2 - mapHeight / 2,
                 size.getColumns() / 2 + mapWidth / 2, size.getRows() / 2 + mapHeight / 2);
         area = area.move(0, -1);
-        drawMap(new PixelFrame(frame, area.getLeft() + 1, area.getTop() + 1, area.getRight() - 1, area.getBottom() - 1));
+        drawMap(new PixelFrame(frame, area.getLeft() + 1, area.getTop() + 1, area.getRight() - 2, area.getBottom() - 1));
         //draw box frame
         graphics.drawLine(area.getLeft(), area.getTop(), area.getRight(), area.getTop(), '─');
         graphics.drawLine(area.getLeft(), area.getBottom(), area.getRight(), area.getBottom(), '─');
