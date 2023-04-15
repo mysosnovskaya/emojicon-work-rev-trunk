@@ -54,8 +54,8 @@ public class EmojiWorldLandscape {
     }
 
     public int getDepth(int x, int y) {
-        List<Integer> col = x < depthMatrix.size() ? depthMatrix.get(x) : null;
-        return col != null && y < col.size() ? col.get(y) : 0;
+        List<Integer> col = x >= 0 && x < depthMatrix.size() ? depthMatrix.get(x) : null;
+        return col != null && y >=0 && y < col.size() ? col.get(y) : 0;
     }
 
 
