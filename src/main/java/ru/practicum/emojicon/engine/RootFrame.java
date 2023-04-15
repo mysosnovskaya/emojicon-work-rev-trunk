@@ -8,14 +8,15 @@ import com.vdurmont.emoji.Emoji;
 import java.util.function.BiFunction;
 
 //корневой фрейм работает с устройством, всегда рисует от 0 до края консоли
-public class RootFrame extends AbstractFrame {
+public class RootFrame extends AbstractFrame implements WithContext {
 
-    Screen screen;
+    private EngineContext context;
+
     private BiFunction<Integer, Integer, TextColor> transparentColorFn;
 
-    public RootFrame(Screen screen, int right, int bottom) {
+    public RootFrame(EngineContext context, int right, int bottom) {
         super(0, 0, right, bottom);
-        this.screen = screen;
+        this.context = context;
     }
 
     public static RootFrame extend(Frame frame) {
@@ -40,13 +41,13 @@ public class RootFrame extends AbstractFrame {
 
     //paint it with background color
     public Point paint(){
-        screen.setCharacter(getPosX(), getPosY(), TextCharacter.DEFAULT_CHARACTER.withCharacter(' ').withBackgroundColor(getRealFillColor()));
+        getScreen().setCharacter(getPosX(), getPosY(), TextCharacter.DEFAULT_CHARACTER.withCharacter(' ').withBackgroundColor(getRealFillColor()));
         return new Point(1, 1);
     }
 
     //draw single character or
     public Point draw(Character character){
-        screen.setCharacter(getPosX(), getPosY(), TextCharacter.DEFAULT_CHARACTER.withCharacter(character).withForegroundColor(getColor()).withBackgroundColor(getRealFillColor()));
+        getScreen().setCharacter(getPosX(), getPosY(), TextCharacter.DEFAULT_CHARACTER.withCharacter(character).withForegroundColor(getColor()).withBackgroundColor(getRealFillColor()));
         return new Point(1, 1);
     }
 
@@ -55,7 +56,7 @@ public class RootFrame extends AbstractFrame {
     public Point draw(Emoji emoji){
         TextCharacter[] chars = TextCharacter.fromString(emoji.getUnicode());
         for(int c = 0; c < chars.length; c++){
-            screen.setCharacter(getPosX(), getPosY(), chars[c].withForegroundColor(getColor()).withBackgroundColor(getRealFillColor()));
+            getScreen().setCharacter(getPosX(), getPosY(), chars[c].withForegroundColor(getColor()).withBackgroundColor(getRealFillColor()));
         }
         return new Point(chars.length, 1);
     }
@@ -69,6 +70,11 @@ public class RootFrame extends AbstractFrame {
         this.transparentColorFn = transparentColorFn;
     }
     public Screen getScreen() {
-        return screen;
+        return context.getScreen();
+    }
+
+    @Override
+    public EngineContext getContext() {
+        return context;
     }
 }

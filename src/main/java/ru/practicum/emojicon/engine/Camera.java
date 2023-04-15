@@ -78,7 +78,7 @@ public class Camera {
     }
 
     public Frame getFrame(Screen screen) {
-        Frame realFrame = new RootFrame(screen, right, bottom);
+        Frame realFrame = new RootFrame(engine, right, bottom);
         TranslatedFrame fakeFrame = new TranslatedFrame(realFrame, left + dx, top + dy, right + dx, bottom + dy);
         fakeFrame.setDx(-dx);
         fakeFrame.setDy(-dy);

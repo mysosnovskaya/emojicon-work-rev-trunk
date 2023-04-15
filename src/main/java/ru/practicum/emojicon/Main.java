@@ -16,6 +16,7 @@ import ru.practicum.emojicon.engine.Engine;
 import ru.practicum.emojicon.model.EmojiCat;
 import ru.practicum.emojicon.model.EmojiWorld;
 import ru.practicum.emojicon.ui.EmojiHelp;
+import ru.practicum.emojicon.ui.EmojiSplashCatFace;
 import ru.practicum.emojicon.ui.EmojiTicker;
 
 import java.io.IOException;
@@ -32,10 +33,15 @@ public class Main {
         EmojiWorld world = new EmojiWorld();
         UUID objectId = world.addObject(new EmojiCat("Tom"), world.getFreeArea().getCorners().get(0));
         world.setSelection(objectId);
+
         Engine engine = new Engine();
-        engine.addRoot(world);
-        engine.addRoot(new EmojiTicker());
-        engine.addRoot(new EmojiHelp(engine, world));
+        engine.addRoot(new EmojiSplashCatFace(3000, () -> {
+            engine.addRoot(world);
+            engine.addRoot(new EmojiTicker());
+            engine.addRoot(new EmojiHelp(engine, world));
+            engine.focusRoot();
+        }));
+
         engine.run();
     }
 
