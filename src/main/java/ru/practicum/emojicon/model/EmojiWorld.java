@@ -1,6 +1,7 @@
 package ru.practicum.emojicon.model;
 
 import com.googlecode.lanterna.input.KeyStroke;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.practicum.emojicon.engine.*;
@@ -117,7 +118,7 @@ public class EmojiWorld extends EmojiObject implements EntityResolver, EmojiObje
     }
 
     @Override
-    public List<UUID> getSelection() {
+    public @NotNull List<UUID> getSelection() {
         return selection != null ? List.of(selection) : Collections.emptyList();
     }
 
@@ -151,5 +152,9 @@ public class EmojiWorld extends EmojiObject implements EntityResolver, EmojiObje
             }
         }
         return null;
+    }
+
+    public EmojiWorldLandscape getLandscape() {
+        return landscape;
     }
 }

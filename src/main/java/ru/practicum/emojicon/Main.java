@@ -17,6 +17,7 @@ import ru.practicum.emojicon.model.EmojiCat;
 import ru.practicum.emojicon.model.EmojiWorld;
 import ru.practicum.emojicon.ui.EmojiHelp;
 import ru.practicum.emojicon.ui.EmojiTicker;
+import ru.practicum.emojicon.ui.EmojiWorldMap;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -36,6 +37,7 @@ public class Main {
         engine.addRoot(world);
         engine.addRoot(new EmojiTicker());
         engine.addRoot(new EmojiHelp(engine, world));
+        engine.addRoot(new EmojiWorldMap(engine, world));
         engine.run();
     }
 

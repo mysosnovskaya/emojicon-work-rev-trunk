@@ -105,7 +105,7 @@ public class Camera {
                     dy++;
                 }
             });
-        } else {
+        } else if (selectedIds.size() > 1){
             throw new IllegalArgumentException();
             //TODO разобраться с множественными выбранными объектами если такие будут
         }

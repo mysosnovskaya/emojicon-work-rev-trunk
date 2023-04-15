@@ -41,7 +41,7 @@ public class EmojiHelp implements Drawable {
                 .map(Emoji::getUnicode)
                 .collect(Collectors.joining(""));
         text.putString(0, frame.getBottom(), " " + arrows + " [Ходить]");
-        String escape = " Esc [Выход] ";
+        String escape = " M [Карта] | Esc [Выход] ";
         text.putString(frame.getRight() - escape.length() + 1, frame.getBottom(), escape);
 
         List<UUID> selection = world.getSelection();

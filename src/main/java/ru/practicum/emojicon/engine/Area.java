@@ -45,4 +45,16 @@ public class Area implements Boxed {
     public int getBottom() {
         return bottom;
     }
+
+    public Area move(int dx, int dy) {
+        return new Area(left + dx, top + dy, right + dx,  bottom + dy);
+    }
+
+    public int getWidth(){
+        return right - left + 1;
+    }
+
+    public int getHeight(){
+        return bottom - top + 1;
+    }
 }

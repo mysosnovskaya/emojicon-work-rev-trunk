@@ -53,6 +53,10 @@ public class EmojiWorldLandscape {
         return 1 - (ky - ay) * Math.cos(12 * kx - ay) / 9;
     }
 
+    public static WorldLandscapeType getLandscapeType(int depth) {
+        return isWaterDeep(depth) ? WorldLandscapeType.WATER : isMountainHigh(depth) ? WorldLandscapeType.MOUNTAIN : WorldLandscapeType.EARTH;
+    }
+
     public int getDepth(int x, int y) {
         List<Integer> col = x < depthMatrix.size() ? depthMatrix.get(x) : null;
         return col != null && y < col.size() ? col.get(y) : 0;

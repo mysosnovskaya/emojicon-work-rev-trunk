@@ -5,4 +5,8 @@ public interface Boxed {
     int getRight();
     int getTop();
     int getBottom();
+
+    default Area getArea(){
+        return new Area(getLeft(), getTop(), getRight(), getBottom());
+    }
 }
